@@ -99,14 +99,14 @@ class Eco extends EventEmitter {
   load_default() {
     this.load_stream(fs.createReadStream(__dirname + "/eco.pgn"));
   }
-  find(pgn) {
+  find(pgn, reversed) {
     if (!this.loaded) {
       throw new Error("wait for loaded event");
     }
     let best_match;
     for (let record of this.entries) {
       let r_pgn = record.pgn.substring(0, record.pgn.indexOf("*"));
-      if (pgn.includes(r_pgn)) {
+      if (!reversed && pgn.includes(r_pgn) || reversed && r_pgn.includes(pgn)) {
         if (best_match && record.pgn.length > best_match.pgn.length) {
           best_match = record;
         } else {
